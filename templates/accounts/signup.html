@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}{% endblock %}
+{% block body_class %}auth-page-body{% endblock %}
+{% block content %}
+
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- Heading section -->
+        <div class="auth-header">
+            <h1>Create an account</h1>
+            <p>Join us to share and explore stories</p>
+        </div>
+
+        <!-- Social signup (UI only for now) -->
+        <div class="auth-social">
+            <button type="button" class="btn btn-google">
+                <img src="{% static 'images/ChatGPT Image Feb 1, 2026, 09_16_48 PM.png' %}"  alt="Google logo" class="btn-icon">
+                Continue with Google
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="auth-divider">
+            <span>or</span>
+        </div>
+
+        <!-- Signup form -->
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+            <!-- Django form fields -->
+            <div class="form-fields">
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+
+            {% if field.errors %}
+                <div class="error-text">
+                    {{ field.errors|striptags }}
+                </div>
+            {% endif %}
+
+            {% if field.help_text and form.is_bound %}
+                <small class="help-text">
+                    {{ field.help_text }}
+                </small>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Create account
+                </button>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p>
+                Already have an account?
+                <a href="{% url 'login' %}">Sign in</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

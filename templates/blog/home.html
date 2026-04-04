@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+
+<div class="feed-wrapper">
+
+    <!-- TABS -->
+    <!-- <div class="feed-tabs">
+        <ul class="nav nav-tabs" id="feedTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#for-you">For You</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#trending">Trending</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#featured">Featured</button>
+            </li>
+        </ul>
+    </div> -->
+
+
+    <div class="feed-tabs">
+        <ul class="nav custom-tabs" id="feedTab" role="tablist">
+
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#for-you">
+                    For You
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#trending">
+                    Trending
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#featured">
+                    Featured
+                </button>
+            </li>
+
+            <!-- Sliding underline -->
+            <div class="tab-indicator"></div>
+
+        </ul>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content">
+
+        <!-- FOR YOU -->
+        <div class="tab-pane fade show active" id="for-you">
+            <div class="feed-container">
+                {% for post in for_you %}
+                    {% include 'partials/post_card.html' %}
+                {% empty %}
+                    <p>No posts available.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- TRENDING -->
+        <div class="tab-pane fade" id="trending">
+            <div class="feed-container">
+                {% for post in trending %}
+                    {% include 'partials/post_card.html' %}
+                {% empty %}
+                    <p>No trending posts.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- FEATURED -->
+        <div class="tab-pane fade" id="featured">
+            <div class="feed-container">
+                {% for post in featured %}
+                    {% include 'partials/post_card.html' %}
+                {% empty %}
+                    <p>No featured posts.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

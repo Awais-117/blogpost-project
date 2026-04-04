@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+
+
+<div class="feed-container">
+
+    {% for post in posts %}
+
+        <article class="post-card">
+
+            <!-- LEFT CONTENT -->
+            <div class="post-main">
+
+                <!-- Author info -->
+                <div class="post-author">
+                    {% if post.author.profile.profile_image %}
+                        <img src="{{ post.author.profile.profile_image.url }}" class="author-avatar">
+                    {% else %}
+                        <div class="author-avatar fallback">
+                            {{ post.author.first_name|first|upper }}
+                        </div>
+                    {% endif %}
+                    <span class="author-name">
+                        {{ post.author.first_name }} {{ post.author.last_name }}
+                    </span>
+                </div>
+
+                <!-- Post title -->
+                <h2 class="post-title">
+                    {{ post.title }}
+                </h2>
+
+                <!-- Post excerpt -->
+                <p class="post-excerpt">
+                    {% comment %} {{ post.content|truncatewords:20 }} {% endcomment %}
+                    {{ post.rendered_excerpt|truncatewords:22 }}
+
+                </p>
+
+                <!-- Post meta (likes / comments later) -->
+                <div class="post-meta">
+                    <span>{{ post.created_at|date:"M d" }} </span>
+                    <span class="post-actions">
+                        👏 0 &nbsp; 💬 0
+                    </span> 
+                </div>
+
+            </div>
+
+            <!-- RIGHT IMAGE -->
+            {% comment %} <div class="post-image">
+                {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="Post image">
+                {% endif %}
+            </div> {% endcomment %}
+            {% if post.featured_image %}
+            <div class="post-image">
+                <img src="{{ post.featured_image.url }}">
+            </div>
+            {% endif %}          
+            <a href="{% url 'detail' post.id %}" class="post-overlay-link"></a>
+        </article>
+
+    {% empty %}
+        <p>No posts available.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+
+ -->

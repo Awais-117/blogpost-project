@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}{% endblock %}
+{% block body_class %}auth-page-body{% endblock %}
+{% block content %}
+
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- Heading -->
+        <div class="auth-header">
+            <h1>Login</h1>
+            <p>Welcome back! Please login to your account.</p>
+        </div>
+
+        <!-- Login Form -->
+        {% comment %} <form method="POST" class="auth-form">
+            {% csrf_token %}
+            
+            <div class="form-fields">
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        
+                        {% if field.errors %}
+                            <div class="error-text">{{ field.errors|striptags }}</div>
+                        {% endif %}
+
+                        {% if field.help_text and form.is_bound %}
+                            <small class="help-text">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Login
+                </button>
+            </div>
+        </form> {% endcomment %}
+
+
+        <form method="POST" class="auth-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" required>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" required>
+    </div>
+
+    {% if form.errors %}
+        <div class="error-text">
+            Invalid username or password
+        </div>
+    {% endif %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Login
+        </button>
+    </div>
+</form>
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p>
+                Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

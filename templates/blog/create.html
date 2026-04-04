@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.create-post-container {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.editor-title {
+    font-size: 42px;
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.editor-subtitle{
+    font-size:20px;
+    border:none;
+    outline:none;
+    width:100%;
+    margin-bottom:20px;
+    color:#6b6b6b;
+}
+
+
+#editorjs{
+    padding:20px 0;
+    font-size:18px;
+    line-height:1.7;
+}
+
+
+
+.publish-bar{
+    margin-top:40px;
+    display:flex;
+    justify-content:flex-end;
+}
+
+.publish-btn{
+    background:#1a8917;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:20px;
+    font-weight:500;
+}
+
+#cover-preview{
+    width:100%;
+    max-height:350px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+.form-warning{
+    display:none;
+    background:#ffe9e9;
+    color:#c0392b;
+    padding:12px 16px;
+    border-radius:8px;
+    margin-bottom:20px;
+    font-size:14px;
+}
+button, .publish-btn, .edit-post-btn{
+    transition: all 0.2s ease;
+}
+
+button:hover{
+    transform: translateY(-2px);
+}
+</style>
+
+<div class="create-post-container">
+    <form  id="post-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="text"
+               name="title"
+               maxlength="100"
+               placeholder="Write your story title..."
+               class="editor-title"
+               required>
+
+        <input type="text"
+               name="subtitle"
+               maxlength="160"
+               placeholder="Write a short subtitle..."
+               class="editor-subtitle">       
+        <input type="file" name="featured_image" accept="image/*" id="image-input">
+        <div class="cover-preview">
+            <img id="cover-preview-img" style="display:none;max-width:100%;">
+        </div>
+
+        <div id="editorjs"></div>
+
+        <input type="hidden" name="content" id="content-input">
+        <div id="form-warning" class="form-warning"></div>
+
+        <div class="publish-bar">
+            <button type="submit" class="publish-btn">
+                Publish story
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<!-- Editor.js -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script>
+
+
+<script>
+
+const editor = new EditorJS({
+    holder: 'editorjs',
+    placeholder: "Tell your story...",
+
+    tools: {
+        header: {
+            class: Header,
+            inlineToolbar: true
+        },
+
+        quote: {
+            class: Quote,
+            inlineToolbar: true
+        },
+
+        image: {
+            class: ImageTool,
+            config: {
+                endpoints: {
+                    byFile: "{% url 'upload_inline_image' %}",
+                },
+                additionalRequestHeaders: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            }
+        },
+
+        linkTool: {
+            class: LinkTool,
+            config: {
+                endpoint: "/fetch-url/"
+            }
+        }
+    }
+});
+
+const form = document.getElementById("post-form")
+
+if (!form) {
+    console.error("Form not found!");
+}
+
+
+
+const titleInput = document.querySelector(".editor-title");
+const warningBox = document.getElementById("form-warning");
+
+function showWarning(message){
+    warningBox.innerText = message;
+    warningBox.style.display = "block";
+}
+
+function hideWarning(){
+    warningBox.style.display = "none";
+}
+
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    hideWarning();
+
+    const title = titleInput.value.trim();
+
+    if(title.length < 5){
+        showWarning("Title must be at least 5 characters.");
+        return;
+    }
+
+    const output = await editor.save();
+
+    if(output.blocks.length === 0){
+        showWarning("Your story cannot be empty.");
+        return;
+    }
+
+    document.getElementById("content-input").value = JSON.stringify(output);
+
+    const publishBtn = document.querySelector(".publish-btn");
+
+    publishBtn.innerText = "Publishing...";
+    publishBtn.disabled = true;
+    form.submit();
+
+});
+
+
+
+const imageInput = document.querySelector('input[name="featured_image"]');
+const previewImg = document.getElementById("cover-preview-img");
+
+{% comment %} imageInput.addEventListener("change", function(){
+    const file = this.files[0];
+
+    if(file){
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            previewImg.src = e.target.result;
+            previewImg.style.display = "block";
+        }
+
+        reader.readAsDataURL(file);
+    }
+}); {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+imageInput.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(!file) return;
+
+    const maxSize = 3 * 1024 * 1024; // 3MB
+
+    if(file.size > maxSize){
+        showWarning("Image must be smaller than 3MB.");
+        imageInput.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+    }
+
+    reader.readAsDataURL(file);
+
+});
+</script>
+
+
+{% endblock %}

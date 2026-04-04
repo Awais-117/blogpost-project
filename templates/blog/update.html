@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.create-post-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding-left: 10%;
+}
+
+.editor-title {
+    font-size: 42px;
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#editorjs {
+    padding: 10px 0;
+}
+
+.publish-btn {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#image-preview{
+    width:100%;
+    max-height:350px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-top:15px;
+}
+</style>
+
+
+<div class="create-post-container">
+
+<form id="post-form" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input
+type="text"
+name="title"
+class="editor-title"
+value="{{ post.title }}"
+placeholder="Title"
+required
+>
+
+<input type="file" name="featured_image" accept="image/*" id="image-input">
+
+{% if post.featured_image %}
+<img src="{{ post.featured_image.url }}" id="image-preview">
+{% else %}
+<img id="image-preview" style="display:none;">
+{% endif %}
+
+<div id="editorjs"></div>
+
+<input type="hidden" name="content" id="content-input">
+
+<button type="submit" class="publish-btn">
+Update Post
+</button>
+
+</form>
+
+</div>
+
+
+<!-- EditorJS -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script>
+
+
+<script>
+
+const editor = new EditorJS({
+
+holder: "editorjs",
+
+data: {{ post.content|safe }},
+
+placeholder: "Continue editing your story...",
+
+tools: {
+
+header: {
+class: Header,
+inlineToolbar: true
+},
+
+quote: {
+class: Quote,
+inlineToolbar: true
+},
+
+image: {
+class: ImageTool,
+config: {
+endpoints: {
+byFile: "{% url 'upload_inline_image' %}"
+},
+additionalRequestHeaders: {
+"X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+}
+}
+},
+
+linkTool: {
+class: LinkTool,
+config: {
+endpoint: "/fetch-url/"
+}
+}
+
+}
+
+});
+
+const form = document.getElementById("post-form");
+
+form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const output = await editor.save();
+
+document.getElementById("content-input").value = JSON.stringify(output);
+
+form.submit();
+
+});
+
+
+// Image preview
+
+const imageInput = document.getElementById("image-input");
+const imagePreview = document.getElementById("image-preview");
+
+imageInput.addEventListener("change", function(){
+
+const file = this.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+imagePreview.src = e.target.result;
+imagePreview.style.display = "block";
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+</script>
+
+{% endblock %}

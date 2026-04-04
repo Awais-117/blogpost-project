@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body_class %}landing-page{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+
+<div class="landing">
+    <div class="overlay">
+        <h1>Human stories & ideas</h1>
+        <p>Discover thoughts, stories, and ideas from people around the world.</p>
+
+        <a href="{% url 'signup' %}" class="btn-landing">
+            Get Started
+        </a>
+    </div>
+</div>
+
+{% endblock %}

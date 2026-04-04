@@ -1,0 +1,697 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="reading-progress">
+    <div class="reading-progress-bar" id="progressBar"></div>
+</div>
+
+<div class="page-layout">
+    <div class="mn-content">
+        <article class="post-container">
+
+    <!-- Title -->
+    <h1 class="post-title">{{ post.title }}</h1>
+    {% if post.subtitle %}
+        <p class="post-subtitle">
+            {{ post.subtitle }}
+        </p>
+    {% endif %}
+
+    
+
+    <!-- Author Section -->
+    {% comment %} <div class="post-author-section">
+        <div class="post-author-avatar">
+            {% if post.author.profile.profile_image %}
+                <img src="{{ post.author.profile.profile_image.url }}">
+            {% else %}
+            <div class="author-avatar-fallback">
+                {{ post.author.first_name|first|upper }}
+            </div>
+            {% endif %}
+            
+        </div>
+        
+        <div class="post-author-info">
+            <div class="author-name-row">
+                <a href="{% url 'public_profile' post.author.id %}" class="author-name">
+                    {{ post.author.get_full_name|default:post.author.username }}
+                </a>
+            </div>
+
+            <span class="post-meta-line">
+                {{ post.created_at|date:"M d, Y" }}
+                · {{ post.reading_time }} min read
+            </span>
+            <div class="post-author-follow">
+
+                {% if request.user != post.author %}
+                    <button 
+                        id="post-follow-btn"
+                        class="{% if is_following %}following{% else %}follow{% endif %}"
+                        data-user-id="{{ post.author.id }}"
+                    >
+                    {% if is_following %}
+                        Following
+                    {% else %}
+                        Follow
+                    {% endif %}
+                    </button>
+                {% endif %}
+
+                <span id="followers-count">
+                    {{ followers_count }} Followers
+                </span>
+
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <div class="post-author-row">
+
+    <!-- Avatar -->
+    <div class="post-author-avatar">
+        {% if post.author.profile.profile_image %}
+            <img src="{{ post.author.profile.profile_image.url }}">
+        {% else %}
+            <div class="post-author-avatar-fallback">
+                {{ post.author.first_name|first|upper }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="post-author-meta">
+
+        <span class="post-author-inline">
+
+            <a href="{% url 'public_profile' post.author.id %}" class="post-author-name">
+                {{ post.author.get_full_name|default:post.author.username }}
+            </a>
+
+            {% if request.user != post.author %}
+                {% comment %} <button 
+                    id="post-follow-btn"
+                    data-user-id="{{ post.author.id }}"
+                    class="follow-inline {% if is_following %}following{% endif %}">
+                    {% if is_following %}Following{% else %}Follow{% endif %}
+                </button> {% endcomment %}
+                <button 
+                    class="follow-btn {% if is_following %}following{% endif %}"
+                    data-user-id="{{ post.author.id }}">
+    
+                    {% if is_following %}
+                        Following
+                    {% else %}
+                        Follow
+                    {% endif %}
+
+                </button>
+            {% endif %}
+
+            · {{ post.created_at|date:"M d" }}
+            · {{ post.reading_time }} min read
+
+        </span>
+
+    </div>
+
+</div>
+
+    <!-- Interaction Bar (Static UI only) -->
+
+    <div class="interaction-bar">
+
+    <div class="left-actions">
+        <button id="clap-btn"
+            class="clap-btn {% if user_clapped %}active{% endif %}"
+            data-url="{% url 'toggle_clap' post.id %}">
+            👏 <span id="clap-count">{{ clap_count }}</span>
+        </button>
+
+        <button id="comment-toggle-btn" class="comment-meta">
+            💬 <span id="comment-count-top">{{ comment_count }}</span>
+        </button>
+    </div>
+
+    <div class="right-actions">
+        {% if user == post.author %}
+            <a href="{% url 'update' post.id %}" class="edit-post-btn">
+                Edit
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+
+    <!-- Featured Image -->
+    {% if post.featured_image %}
+        <div class="featured-image">
+            <img src="{{ post.featured_image.url }}">
+        </div>
+    {% endif %}
+
+    <!-- Post Content -->
+
+
+     <div class="post-containere">
+    <div class="post-content">
+        {% for block in post.content.blocks %}
+
+            {% if block.type == "paragraph" %}
+                <p>{{ block.data.text|safe }}</p>
+
+            {% elif block.type == "header" %}
+                <h{{ block.data.level }} class="content-heading">
+                    {{ block.data.text|safe }}
+                </h{{ block.data.level }}>
+
+            {% elif block.type == "quote" %}
+                <blockquote class="content-quote">
+                    {{ block.data.text|safe }}
+                </blockquote>
+
+            {% elif block.type == "image" %}
+                <div class="content-image">
+                    <img src="{{ block.data.file.url }}">
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+    </div>
+</div> 
+
+
+<!-- <hr class="section-divider">
+<div class="comment-cta">
+    <p>What are your thoughts?</p>
+    <button id="scroll-to-comments">Write a comment</button>
+</div> -->
+    <hr class="section-divider">
+
+
+
+
+
+
+    {% comment %} <div class="author-bio-card">
+
+    <!-- LEFT -->
+    <div class="bio-left">
+        {% if post.author.profile.profile_image %}
+            <img src="{{ post.author.profile.profile_image.url }}" class="bio-avatar">
+        {% else %}
+            <div class="bio-avatar-placeholder">
+                {{ post.author.first_name|first|upper }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- RIGHT -->
+    <div class="bio-right">
+
+        <h3 class="bio-name">
+            {{ post.author.get_full_name|default:post.author.username }}
+        </h3>
+
+        <p class="bio-text">
+            {{ post.author.profile.bio|default:"Writer on MyBlog." }}
+        </p>
+
+        <div class="bio-actions">
+
+            {% if request.user != post.author %}
+                <button 
+                    id="bio-follow-btn"
+                    class="{% if is_following %}following{% else %}follow{% endif %}"
+                    data-user-id="{{ post.author.id }}"
+                >
+                    {% if is_following %}
+                        Following
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            {% endif %}
+
+            <a href="{% url 'public_profile' post.author.id %}" class="view-profile">
+                View Profile →
+            </a>
+
+        </div>
+
+    </div>
+
+</div> {% endcomment %}
+
+
+<div class="author-card">
+
+    <div class="author-card-left">
+        {% if post.author.profile.profile_image %}
+            <img src="{{ post.author.profile.profile_image.url }}" class="author-card-avatar">
+        {% else %}
+            <div class="author-card-avatar-fallback">
+                {{ post.author.first_name|first|upper }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="author-card-right">
+
+        <div class="author-card-top">
+
+            <a href="{% url 'public_profile' post.author.id %}" class="author-card-name">
+                {{ post.author.get_full_name|default:post.author.username }}
+            </a>
+
+            {% if request.user != post.author %}
+                <button 
+                class="follow-btn {% if is_following %}following{% endif %}"
+                data-user-id="{{ post.author.id }}">
+    
+                {% if is_following %}
+                    Following
+                {% else %}
+                    Follow
+                {% endif %}
+
+                </button>
+                {% comment %} <button 
+                    id="author-card-follow-btn"
+                    data-user-id="{{ post.author.id }}"
+                    class="author-card-follow {% if is_following %}following{% endif %}">
+                    
+                    {% if is_following %}
+                        Following
+                    {% else %}
+                        Follow
+                    {% endif %}
+
+                </button> {% endcomment %}
+            {% endif %}
+
+        </div>
+
+        <div class="author-card-meta" id="followers-count">
+            {{ followers_count }}followers
+        </div>
+
+        {% if post.author.profile.bio %}
+            <p class="author-card-bio">
+                {{ post.author.profile.bio|truncatewords:25 }}
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+
+
+
+
+    <div class="share-section">
+    <p>Share this post</p>
+    <div class="share-buttons">
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}">
+            Twitter
+        </a>
+        <a href="https://www.linkedin.com/shareArticle?url={{ request.build_absolute_uri }}">
+            LinkedIn
+        </a>
+    </div>
+</div>
+
+
+
+
+</article>
+    </div>
+    <aside class="right-panel" id="rightPanel">
+        <div class="comment-section">
+
+    <h3>
+        <span id="comment-count">{{ comment_count }}</span> Comments
+    </h3>
+
+    {% if user.is_authenticated %}
+        <form id = "comment-form" method="POST" action="{% url 'add_comment' post.id %}" class="comment-form">
+            {% csrf_token %}
+            <textarea name="content"
+                      placeholder="Write a comment..."
+                      id = "comment-input"
+                      required></textarea>
+            <button type="submit">Post Comment</button>
+        </form>
+    {% else %}
+        <p>
+            Please <a href="{% url 'login' %}">login</a> to comment.
+        </p>
+    {% endif %}
+
+    {% comment %} <div class="comment-list">
+        {% for comment in comments %}
+            <div class="comment-item {% if forloop.counter > 3 %}extra-comment{% endif %}">
+                <div class="comment-header">
+                    <strong>{{ comment.user.username }}</strong>
+                    <span>{{ comment.created_at|timesince }}ago</span>
+                </div>
+                {% if comment.user == user %}
+                    <a href="{% url 'delete_comment' comment.id %}"
+                       class="delete-comment">
+                        Delete
+                    </a>
+    {% endif %}
+                <p>{{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div> {% endcomment %}
+
+    <div class="comment-list">
+    {% for comment in comments %}
+        <div class="comment-item {% if forloop.counter > 3 %}extra-comment{% endif %}" data-id="{{ comment.id }}">
+            
+            <div class="comment-top">
+                <div class="comment-user-info">
+                    <strong class="comment-username">
+                        {{ comment.user.username }}
+                    </strong>
+                    <span class="comment-time" data-time="{{ comment.created_at|date:'c' }}">
+                    </span>
+                </div>
+
+                {% if comment.user == user %}
+                    <button type="button"
+                    data-id="{{ comment.id }}"
+                       class="comment-delete"
+                       title="Delete comment">
+                       ...
+            </button>
+                {% endif %}
+            </div>
+
+            <p class="comment-text">
+                {{ comment.content }}
+            </p>
+
+        </div>
+    {% empty %}
+        <p class="no-comments">No comments yet.</p>
+    {% endfor %}
+</div>
+{% if comment_count > 3 %}
+    <button id="toggle-comments" class="toggle-comments-btn">
+        View all comments
+    </button>
+{% endif %}
+
+</div>
+    </aside>
+</div>
+<script>
+
+function formatTimeAgo(dateString) {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diff = Math.floor((now - past) / 1000); // seconds
+
+    if (diff < 60) return "just now";
+
+    const minutes = Math.floor(diff / 60);
+    if (minutes < 60) return minutes + "m ago";
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return hours + "h ago";
+
+    const days = Math.floor(hours / 24);
+    return days + "d ago";
+}
+
+
+// ================= CLAP =================
+
+const clapBtn = document.getElementById("clap-btn");
+const clapCount = document.getElementById("clap-count");
+
+if (clapBtn && clapCount) {
+
+    let isProcessing = false; // 🔥 prevent spam clicks
+
+    clapBtn.addEventListener("click", function () {
+
+        if (isProcessing) return;
+        isProcessing = true;
+
+        // 🔥 Button animation
+        clapBtn.classList.add("clap-animate");
+
+        // 🔥 Count animation (instant feedback)
+        clapCount.style.transform = "scale(1.3)";
+
+        fetch(clapBtn.dataset.url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            // 🔥 Update count smoothly
+            setTimeout(() => {
+                clapCount.innerText = data.clap_count;
+                clapCount.style.transform = "scale(1)";
+            }, 150);
+
+            // 🔥 Toggle active state
+            clapBtn.classList.toggle("active", data.clapped);
+        })
+        .catch(() => {
+            // optional: handle error (clean UX)
+            clapCount.style.transform = "scale(1)";
+        })
+        .finally(() => {
+            setTimeout(() => {
+                clapBtn.classList.remove("clap-animate");
+                isProcessing = false;
+            }, 200);
+        });
+
+    });
+}
+
+//const clapBtn = document.getElementById("clap-btn");
+//const clapCount = document.getElementById("clap-count");
+
+//if (clapBtn) {
+  //  clapBtn.addEventListener("click", function() {
+
+    //    fetch(clapBtn.dataset.url, {
+      //      method: "POST",
+        //    headers: {
+          //      "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            //} 
+//        })
+  //      .then(res => res.json())
+    //    .then(data => {
+      //      clapCount.style.transform = "scale(1.3)";
+
+//setTimeout(()=>{
+  //  clapCount.innerText = data.clap_count;
+    //clapCount.style.transform = "scale(1)";
+//},150);
+  //          clapBtn.classList.toggle("active", data.clapped);
+    //    });
+
+//    });
+//}
+
+
+// ================= COMMENTS =================
+
+
+
+
+
+
+
+
+
+const commentForm = document.getElementById("comment-form");
+const commentInput = document.getElementById("comment-input");
+const commentList = document.querySelector(".comment-list");
+const commentCount = document.getElementById("comment-count");
+
+if (commentForm) {
+
+    commentForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        fetch(commentForm.action, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                content: commentInput.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            const newComment = document.createElement("div");
+            newComment.classList.add("comment-item");
+            newComment.setAttribute("data-id", data.id);
+
+            if (commentList.children.length >= 3) {
+                newComment.classList.add("extra-comment");
+            }
+
+            newComment.innerHTML = `
+                <div class="comment-top">
+                    <div class="comment-user-info">
+                        <strong class="comment-username">
+                            ${data.username}
+                        </strong>
+                        <span class="comment-time">
+                            ${formatTimeAgo(data.created_at)}
+                        </span>
+                    </div>
+                    <button type="button"
+                            class="comment-delete"
+                            data-id="${data.id}">
+                        ⋯
+                    </button>
+                </div>
+                <p class="comment-text">
+                    ${data.content}
+                </p>
+            `;
+
+            commentList.appendChild(newComment);
+
+            commentInput.value = "";
+            commentCount.innerText = data.comment_count;
+            document.getElementById("comment-count-top").innerText = data.comment_count;
+
+        });
+
+    });
+
+}
+
+
+//===========comment time=============
+
+
+
+document.querySelectorAll(".comment-time").forEach(el => {
+    const time = el.dataset.time;
+    el.innerText = formatTimeAgo(time);
+});
+
+// ================= DELETE COMMENT =================
+
+document.addEventListener("click", function(e) {
+
+    const deleteBtn = e.target.closest(".comment-delete");
+    if (!deleteBtn) return;
+
+    const commentId = deleteBtn.getAttribute("data-id");
+    if (!commentId) {
+        console.error("Comment ID missing");
+        return;
+    }
+
+    fetch("{% url 'delete_comment' 0 %}".replace("0", commentId), {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        const commentElement =
+            document.querySelector(`.comment-item[data-id="${commentId}"]`);
+
+        if (commentElement) {
+            commentElement.remove();
+        }
+
+        commentCount.innerText = data.comment_count;
+        document.getElementById("comment-count-top").innerText = data.comment_count;
+
+    });
+
+});
+
+
+// ================= TOGGLE COMMENTS =================
+
+const toggleBtn = document.getElementById("toggle-comments");
+const commentSection = document.querySelector(".comment-section");
+
+if (toggleBtn && commentSection) {
+
+    toggleBtn.addEventListener("click", function() {
+
+        commentSection.classList.toggle("comments-expanded");
+
+        toggleBtn.innerText =
+            commentSection.classList.contains("comments-expanded")
+            ? "Hide comments"
+            : "View all comments";
+
+    });
+
+}
+
+
+const scrollBtn = document.getElementById("scroll-to-comments");
+const panel = document.getElementById("rightPanel");
+const commentBtn = document.getElementById("comment-toggle-btn");
+
+if (scrollBtn && panel) {
+    scrollBtn.addEventListener("click", () => {
+
+        // ✅ Step 1: Open panel (desktop)
+        panel.classList.add("show");
+
+        // Optional: sync toggle button state
+        if (commentBtn) {
+            commentBtn.classList.add("active");
+        }
+
+        // ✅ Step 2: Scroll to it
+        panel.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    });
+}
+
+// 🔥 Reading progress
+window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+
+    document.getElementById("progressBar").style.width = progress + "%";
+});
+
+
+
+
+
+
+</script>
+
+{% endblock %}

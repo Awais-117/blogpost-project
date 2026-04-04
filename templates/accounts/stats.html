@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="stats-page">
+
+<!-- PAGE HEADER -->
+
+<div class="stats-header">
+<h1>Your Analytics</h1>
+<p>Track how your stories perform and how readers engage with them.</p>
+</div>
+
+
+<!-- STATS CARDS -->
+
+<div class="stats-cards">
+
+<div class="stat-card">
+<div class="stat-number">{{ post_count }}</div>
+<div class="stat-label">Posts Written</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-number">{{ clap_count }}</div>
+<div class="stat-label">Total Claps</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-number">{{ comment_count }}</div>
+<div class="stat-label">Total Comments</div>
+</div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="chart-card">
+
+<div class="chart-header">
+<h2>Posting Activity</h2>
+<p>Your writing activity over time</p>
+</div>
+
+<div class="chart-wrapper">
+<canvas id="postsChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- TOP POSTS -->
+
+<div class="posts-card">
+
+<h2>Top Performing Stories</h2>
+
+<table class="posts-table">
+
+<thead>
+<tr>
+<th>Story</th>
+<th>Claps</th>
+<th>Comments</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for post in top_posts %}
+
+<tr>
+
+<td class="post-title">
+{{ post.title }}
+</td>
+
+<td>{{ post.clap_total }}</td>
+
+<td>{{ post.comment_total }}</td>
+
+<td>
+<a class="view-link" href="{% url 'detail' post.id %}">
+View
+</a>
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4" class="empty">
+No published stories yet
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script> 
+    const ctx = document.getElementById('postsChart');
+
+new Chart(ctx, {
+
+type: 'line',
+
+data: {
+
+labels: {{ chart_labels|safe }},
+
+datasets: [{
+
+label: 'Posts',
+
+data: {{ chart_data|safe }},
+
+borderWidth: 2,
+
+tension: 0.35,
+
+pointRadius: 3
+
+}]
+
+},
+
+options: {
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+legend:{display:false}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{color:"#f1f1f1"}
+},
+x:{
+grid:{display:false}
+}
+}
+
+}
+
+});
+</script>
+
+{% endblock %}

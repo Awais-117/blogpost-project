@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="stories-container">
+
+    <!-- Page Header -->
+
+    <div class="stories-header">
+
+        <div>
+            <h1>Your Stories</h1>
+            <p>Manage your drafts and published posts</p>
+        </div>
+
+        <a class="create-story-btn" href="{% url 'create' %}">
+            Write a new story
+        </a>
+
+    </div>
+
+
+    <!-- Published Section -->
+
+    <div class="stories-section">
+
+        <h2>Published ({{ published_count }})</h2>
+
+        {% for post in published_posts %}
+
+        <div class="story-card">
+
+            <div class="story-main">
+
+                <a class="story-title" href="{% url 'detail' post.id %}">
+                    {{ post.title }}
+                </a>
+
+                <div class="story-meta">
+
+                    <span>
+                        Published {{ post.created_at|date:"M d, Y" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="story-actions">
+
+    <a href="{% url 'detail' post.id %}" class="view-btn">
+        View
+    </a>
+
+    <a href="{% url 'update' post.id %}" class="edit-btn">
+        Edit
+    </a>
+
+    <a href="{% url 'delete' post.id %}" class="delete-btn">
+        Delete
+    </a>
+
+</div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+            <p>You haven't published any stories yet.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+
+    <h2>Scheduled ({{ scheduled_count }})</h2>
+
+{% for post in scheduled %}
+
+<div class="story-card">
+
+<div class="story-main">
+
+<a class="story-title" href="{% url 'preview' post.id %}">
+{{ post.title }}
+</a>
+
+<div class="story-meta">
+
+<span class="scheduled-badge">Scheduled</span>
+
+<span>
+Publishes {{ post.scheduled_for|date:"M d, Y H:i" }}
+</span>
+
+</div>
+
+</div>
+
+<div class="story-actions">
+
+<a href="{% url 'update' post.id %}" class="edit-btn">
+Edit
+</a>
+
+<a href="{% url 'preview' post.id %}" class="preview-btn">
+Preview
+</a>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="empty-state">
+<p>No scheduled stories.</p>
+</div>
+
+{% endfor %}
+
+
+    <!-- Drafts Section -->
+
+
+    <h2>Drafts ({{ draft_count }})</h2>
+
+{% for post in drafts %}
+
+<div class="story-card">
+
+    <div class="story-main">
+
+        <a class="story-title" href="{% url 'update' post.id %}">
+            {{ post.title }}
+        </a>
+
+        <div class="story-meta">
+
+            <span class="draft-badge">Draft</span>
+
+            <span>
+                Last edited {{ post.updated_at|date:"M d, Y" }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="story-actions">
+
+        <a href="{% url 'update' post.id %}" class="edit-btn">
+            Edit
+        </a>
+
+        <a href="{% url 'preview' post.id %}" class="preview-btn">
+            Preview
+        </a>
+
+        <a href="{% url 'delete' post.id %}" class="delete-btn">
+            Delete
+        </a>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="empty-state">
+    <p>No drafts available.</p>
+</div>
+
+{% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

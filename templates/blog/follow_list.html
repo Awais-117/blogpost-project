@@ -1,0 +1,116 @@
+ {% extends "base.html" %}
+
+{% block content %}
+
+<div class="follow-page">
+
+    <h2>
+        {{ profile_user.get_full_name|default:profile_user.username }} — {{ title }}
+    </h2>
+
+    {% comment %} {% for user in users %} {% endcomment %}
+    {% for item in users_data %}
+    {% with user=item.user %}
+
+
+    <div class="follow-card">
+
+    <!-- LEFT -->
+    <div class="follow-left">
+        {% if user.profile.profile_image %}
+            <img src="{{ user.profile.profile_image.url }}" class="follow-avatar">
+        {% else %}
+            <div class="follow-avatar-placeholder">
+                {{ user.first_name|first|upper }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- CENTER -->
+    <div class="follow-center">
+        <a href="{% url 'public_profile' user.id %}" class="follow-name">
+            {{ user.get_full_name|default:user.username }}
+        </a>
+
+        <p class="follow-bio">
+            {{ user.profile.bio|default:"Writer on MyBlog."|truncatewords:10 }}
+        </p>
+    </div>
+
+    <!-- RIGHT (FOLLOW BUTTON) -->
+    <div class="follow-action">
+
+        {% if request.user != user %}
+
+        <button 
+            class="follow-btn {% if item.is_following %}following{% endif %}" 
+            data-user-id="{{ user.id }}"
+        >
+            {% if item.is_following %}
+                Following
+            {% else %}
+                Follow
+            {% endif %}
+        </button>
+            {% comment %} <form method="POST" action="{% url 'toggle_follow' user.id %}">
+                {% csrf_token %}
+
+                {% if item.is_following %}
+                    <button class="btn-following">Following</button>
+                {% else %}
+                    <button class="btn-follow">Follow</button>
+                {% endif %}
+
+            </form> {% endcomment %}
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endwith %}
+
+{% endfor %}
+
+    {% comment %} <div class="follow-card">
+
+        <!-- LEFT -->
+        <div class="follow-left">
+
+            {% if user.profile.profile_image %}
+                <img src="{{ user.profile.profile_image.url }}" class="follow-avatar">
+            {% else %}
+                <div class="follow-avatar-placeholder">
+                    {{ user.first_name|first|upper }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="follow-right">
+
+            <a href="{% url 'public_profile' user.id %}" class="follow-name">
+                {{ user.get_full_name|default:user.username }}
+            </a>
+
+            <p class="follow-bio">
+                {{ user.profile.bio|default:"Writer on MyBlog." }}
+            </p>
+
+        </div>
+
+    </div> {% endcomment %}
+
+    {% comment %} {% empty %}
+        <p>No {{ title|lower }} yet.</p>
+    {% endfor %} {% endcomment %}
+
+</div>
+
+
+<script>
+
+</script>
+
+{% endblock %}

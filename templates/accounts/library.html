@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="library-container">
+
+<div class="library-header">
+
+<h1>Your Library</h1>
+<p>Stories you've appreciated and saved through claps.</p>
+
+</div>
+
+
+{% if posts %}
+
+<div class="library-list">
+
+{% for post in posts %}
+
+<div class="library-card">
+
+<div class="library-content">
+
+<a class="library-title" href="{% url 'detail' post.id %}">
+{{ post.title }}
+</a>
+
+<div class="library-meta">
+
+<span>
+By {{ post.author.username }}
+</span>
+
+<span>
+{{ post.created_at|date:"M d, Y" }}
+</span>
+
+</div>
+
+</div>
+
+{% if post.featured_image %}
+
+<div class="library-image">
+
+<img src="{{ post.featured_image.url }}">
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="library-empty">
+
+<h3>Your library is empty</h3>
+
+<p>Start reading stories and clap to save them here.</p>
+
+<a href="{% url 'home' %}" class="discover-btn">
+Discover stories
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+<article class="post-card">
+
+    <div class="post-main">
+
+        <div class="post-author">
+            {% if post.author.profile.profile_image %}
+                <img src="{{ post.author.profile.profile_image.url }}" class="author-avatar">
+            {% else %}
+                <div class="author-avatar fallback">
+                    {{ post.author.first_name|first|upper }}
+                </div>
+            {% endif %}
+            <span class="author-name">
+                {{ post.author.first_name }} {{ post.author.last_name }}
+            </span>
+        </div>
+
+        <h2 class="post-title">{{ post.title }}</h2>
+
+        <p class="post-excerpt">
+            {{ post.rendered_excerpt|truncatewords:22 }}
+        </p>
+
+        <div class="post-meta">
+            <span>{{ post.created_at|date:"M d" }}</span>
+            <span class="post-actions">👏 0 &nbsp; 💬 0</span>
+        </div>
+
+    </div>
+
+    {% if post.featured_image %}
+    <div class="post-image">
+        <img src="{{ post.featured_image.url }}">
+    </div>
+    {% endif %}
+
+    <a href="{% url 'detail' post.id %}" class="post-overlay-link"></a>
+
+</article>

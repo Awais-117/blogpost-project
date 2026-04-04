@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}{% endblock %}
+{% block content %}
+
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- Heading -->
+        <div class="auth-header">
+            <h1>Complete your profile</h1>
+            <p>This helps others recognize you on MyBlog</p>
+        </div>
+
+        <!-- Profile form -->
+
+        <form method="POST" enctype="multipart/form-data" class="auth-form">
+{% csrf_token %}
+
+{% if form.errors %}
+<div style="color:red;">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<div class="avatar-upload">
+
+    {% if profile.profile_image %}
+        <img src="{{ profile.profile_image.url }}" class="profile-preview">
+    {% else %}
+        <div class="profile-preview-placeholder">
+            {{ user.username|first|upper }}
+        </div>
+    {% endif %}
+
+    {{ form.profile_image }}
+</div>
+
+
+<div class="form-group">
+<label>City</label>
+{{ form.city }}
+</div>
+
+<div class="form-group">
+<label>Study</label>
+{{ form.study }}
+</div>
+
+<div class="form-group">
+<label>Bio</label>
+{{ form.bio }}
+</div>
+
+<div class="form-actions">
+<button type="submit" class="btn-primary">
+Save Profile
+</button>
+</div>
+
+</form>
+        {% comment %} <form method="POST" enctype="multipart/form-data" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-fields">
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="error-text">
+                                {{ field.errors|striptags }}
+                            </div>
+                        {% endif %}
+
+                        {% if field.help_text and form.is_bound %}
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Save profile
+                </button>
+            </div>
+        </form> {% endcomment %}
+
+        <!-- Footer note -->
+        <div class="auth-footer">
+            <p>You can edit this later from your profile</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

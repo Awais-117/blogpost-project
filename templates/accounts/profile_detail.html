@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="profile-wrapper">
+
+    <div class="profile-card">
+
+        <!-- LEFT SIDE -->
+        <div class="profile-left">
+
+            {% if profile.profile_image %}
+                <img class="profile-avatar" src="{{ profile.profile_image.url }}">
+            {% else %}
+                <div class="profile-avatar-placeholder">
+                    {{ request.user.first_name|first|upper }}
+                </div>
+            {% endif %}
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="profile-right">
+
+            <h1 class="profile-name">
+                {{ request.user.first_name }} {{ request.user.last_name }}
+            </h1>
+
+            <div class="profile-stats">
+
+                <div class="stat-item">
+                    <a>
+                    <strong>{{ post_count }}</strong>
+                    <span>Posts</span>
+                    </a>
+                </div>
+
+                <div class="stat-item">
+                <a href="{% url 'followers_list' request.user.id %}">
+                    <strong>{{ followers_count }}</strong>
+                    <span>Followers</span>
+                </a>    
+                    
+                </div>
+
+                <div class="stat-item">
+                <a href="{% url 'following_list' request.user.id %}">
+                    <strong>{{ following_count }}</strong>
+                    <span>Following</span>
+                </a>    
+                    
+               </div>
+
+            </div>
+
+            <p class="profile-bio">
+                {{ profile.bio|default:"Writer on MyBlog." }}
+            </p>
+
+            <p class="profile-meta">
+                {{ profile.city }} • {{ profile.study }}
+            </p>
+
+            <div class="profile-extra">
+
+                <div class="extra-item">
+                    <span>Member since</span>
+                    <strong>{{ joined|date:"Y" }}</strong>
+                </div>
+
+                <div class="extra-item">
+                    <span>Posts written</span>
+                    <strong>{{ post_count }}</strong>
+                </div>
+
+            </div>
+
+            <a class="edit-profile-btn" href="{% url 'complete_profile' %}">
+                Edit Profile
+            </a>
+
+            <!-- optional platform text -->
+            <p class="platform-note">
+                Share your knowledge with the world.  
+                Great stories start with a single idea.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="profile-insights">
+
+<h2>Creator Insights</h2>
+
+<div class="insight-grid">
+
+<div class="insight-card">
+<h3>{{ post_count }}</h3>
+<p>Published Posts</p>
+</div>
+
+<div class="insight-card">
+<h3>{{ clap_count }}</h3>
+<p>Total Claps</p>
+</div>
+
+<div class="insight-card">
+<h3>{{ comment_count }}</h3>
+<p>Comments Received</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="profile-latest">
+
+<h2>Latest Story</h2>
+
+{% if latest_post %}
+
+<div class="latest-post">
+
+<a href="{% url 'detail' latest_post.id %}">
+{{ latest_post.title }}
+</a>
+
+<span>
+{{ latest_post.created_at|date:"M d, Y" }}
+</span>
+
+</div>
+
+{% else %}
+
+<p>You haven't published any stories yet.</p>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

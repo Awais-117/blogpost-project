@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="public-profile">
+
+    <!-- AUTHOR HEADER -->
+    <!-- <div class="author-header">
+        <div class="author_left">
+        {% if profile.profile_image %}
+            <img class="author-avatar" src="{{ profile.profile_image.url }}">
+        {% else %}
+            <div class="author-avatar-placeholder">
+                {{ author.first_name|first|upper }}
+            </div>
+        {% endif %}
+        </div>
+
+        
+
+        <div class="author-info">
+
+    
+            <div class="profile-stats">
+
+                <div class="stat-item ">
+                    <a>
+                    <strong>{{ posts.count }}</strong>
+                    <span>Posts</span>
+                    </a>
+                </div>
+
+                <div class="stat-item">
+                    <a href="{% url 'followers_list' author.id %}">
+                        <strong id="followers-count" style="color: #1a1a1a; font-size: 18px; font-weight: 600;">{{ followers_count }}</strong>
+                        <span>Followers</span>
+                    </a>
+                    
+                </div>
+
+                <div class="stat-item">
+                    <a href="{% url 'following_list' author.id %}">
+                        <strong id="following_count">{{ following_count }}</strong>
+                        <span>Following</span>
+                    </a>
+                    
+                </div>
+
+            </div>
+
+    <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+
+    <p class="author-bio">
+        {{ profile.bio|default:"Writer on MyBlog." }}
+    </p>
+
+    <p class="author-meta">
+        {{ profile.city }} • {{ profile.study }}
+    </p>
+
+    
+    {% if request.user != author %}
+        <button 
+            class="follow-btn {% if is_following %}following{% endif %}"
+            data-user-id="{{ author.id }}"
+        >
+            {% if is_following %}
+                Following
+            {% else %}
+                Follow
+            {% endif %}
+        </button>
+    {% endif %}
+
+</div>
+
+    </div> -->
+
+
+
+    <div class="author-header">
+
+    <div class="author-left">
+        {% if profile.profile_image %}
+            <img class="author-avatar" src="{{ profile.profile_image.url }}">
+        {% else %}
+            <div class="author-avatar-placeholder">
+                {{ author.first_name|first|upper }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="author-right">
+
+        <!-- NAME + FOLLOW -->
+        <div class="author-top">
+            <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+
+            {% if request.user != author %}
+            <button 
+                class="follow-btn {% if is_following %}following{% endif %}"
+                data-user-id="{{ author.id }}"
+            >
+                {% if is_following %}Following{% else %}Follow{% endif %}
+            </button>
+            {% endif %}
+        </div>
+
+        <!-- STATS -->
+        <div class="profile-stats">
+            <div class="stat-item">
+                <strong>{{ posts.count }}</strong>
+                <span>Posts</span>
+            </div>
+
+            <div class="stat-item">
+                <a href="{% url 'followers_list' author.id %}">
+                    <strong id="followers-count" style="color: #1a1a1a; font-size: 18px; font-weight: 600;">{{ followers_count }}</strong>
+                    <span>Followers</span>
+                </a>
+            </div>
+
+            <div class="stat-item">
+                <a href="{% url 'following_list' author.id %}">
+                    <strong>{{ following_count }}</strong>
+                    <span>Following</span>
+                </a>
+            </div>
+        </div>
+
+        <p class="author-bio">
+            {{ profile.bio|default:"Writer on MyBlog." }}
+        </p>
+
+        <p class="author-meta">
+            {{ profile.city }} • {{ profile.study }}
+        </p>
+
+    </div>
+
+</div>
+    <!-- POSTS SECTION -->
+
+{% comment %} <div class="post-card">
+
+    <div class="post-content">
+
+        <a href="{% url 'detail' post.id %}" class="post-title">
+            {{ post.title }}
+        </a>
+
+        <p class="post-preview">
+            {{ post.content|striptags|truncatewords:20 }}
+        </p>
+
+        <div class="post-meta">
+            {{ post.created_at|date:"M d, Y" }}
+        </div>
+
+    </div>
+
+</div> {% endcomment %}
+
+{% for post in posts %}
+<div class="post-row">
+
+    <div class="post-row-content">
+
+        <a href="{% url 'detail' post.id %}" class="post-row-title">
+            {{ post.title }}
+        </a>
+
+        <p class="post-row-preview">
+            {{ post.preview|truncatewords:20 }}
+        </p>
+
+        <div class="post-row-meta">
+            {{ post.created_at|date:"M d" }}
+        </div>
+
+    </div>
+    {% if post.featured_image %}
+        <div class="post-row-image">
+            <img src="{{ post.featured_image.url }}">
+        </div>
+    {% endif %}
+
+</div>
+
+{% empty %}
+    <p>No stories published yet.</p>
+{% endfor %}
+
+</div>
+
+<!-- 🔥 JS (FOLLOW SYSTEM) -->
+{% comment %} <script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const btn = document.getElementById("follow-btn");
+
+    if(btn){
+        btn.addEventListener("click", function(){
+
+            const userId = this.dataset.userId;
+
+            fetch(`/profile/${userId}/follow/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                }
+            })
+            .then(response => response.json())
+             .then(data => {
+
+                if(data.following){
+                    btn.innerText = "Following";
+                    btn.classList.remove("follow");
+                    btn.classList.add("following");
+                } else {
+                    btn.innerText = "Follow";
+                    btn.classList.remove("following");
+                    btn.classList.add("follow");
+                }
+
+                document.getElementById("followers-count").innerText =
+                data.followers_count;
+            });
+
+        });
+    }
+
+});
+</script> {% endcomment %}
+
+{% endblock %}
