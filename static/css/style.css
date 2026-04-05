@@ -352,7 +352,7 @@ body.no-sidebar .main-content{
 
 
 nav {
-    width: 95%;
+    width: 100%;
     padding: 1rem 1.5rem;
     background: #fff;
     border-bottom: 1px solid #eee;
@@ -361,6 +361,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
     
 
 
@@ -540,7 +541,7 @@ body.landing-page .menu-btn{
 
 .main-content {
     padding: 80px 24px 20px;
-    margin-left: 220px;
+    margin-left: 260px;
     /* width: 100%; */
     transition: all 0.3s ease;
 }

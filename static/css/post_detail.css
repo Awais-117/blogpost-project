@@ -27,10 +27,11 @@
 @media (min-width: 1024px){
 .page-layout {
     display: flex;
-    align-items: flex-start;
+    align-items:flex-start;
+    justify-content: space-between;
     gap: 40px;
 
-    max-width: 1100px;
+    max-width: 1200px;
     width: 100%;
 
     margin-right: auto;
@@ -93,6 +94,7 @@
 
 .mn-content {
     max-width: 560px;
+    min-width: 0;
     padding-left: 0;
     margin-left: 10px;
 }
