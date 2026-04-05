@@ -75,12 +75,6 @@ A modern, full-stack **blogging platform** built with Django where users can wri
 
 ---
 
-## 📸 Screenshots
-
-> Add your screenshots here (VERY IMPORTANT for portfolio)
-
----
-
 ## ⚙️ Run Locally
 
 ```bash
