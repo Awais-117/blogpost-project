@@ -100,16 +100,20 @@ This project demonstrates:
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home](images/home.png)
+
+![Home](static/images/home.png)
 
 ### 📄 Detail Page
-![Detail](images/detail.png)
+
+![Detail](static/images/detail.png)
 
 ### ✍️ Create Post
-![Create](images/create.png)
+
+![Create](static/images/create.png)
 
 ### 👤 Profile Page
-![Profile](images/profile.png)
+
+![Profile](static/images/profile.png)
 
 ## 👨‍💻 Author
 
