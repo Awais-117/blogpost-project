@@ -1,4 +1,4 @@
-# 🚀 Django Blog Platform (Medium-Style)
+# 🚀 Django Blog Platform 
 
 A modern, full-stack **blogging platform** built with Django where users can write, explore, and interact with content — inspired by platforms like Medium.
 
