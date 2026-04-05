@@ -77,8 +77,19 @@ A modern, full-stack **blogging platform** built with Django where users can wri
 
 ## 📸 Screenshots
 
-> Add your screenshots here (VERY IMPORTANT for portfolio)
+## 📸 Screenshots
 
+### 🏠 Home Page
+![Home](assets/home.png)
+
+### 📄 Detail Page
+![Detail](assets/detail.png)
+
+### ✍️ Create Post
+![Create](assets/create.png)
+
+### 👤 Profile Page
+![Profile](assets/profile.png)
 ---
 
 ## ⚙️ Run Locally
