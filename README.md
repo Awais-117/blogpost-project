@@ -97,6 +97,19 @@ This project demonstrates:
 * Clean and scalable code structure
 
 ---
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](images/home.png)
+
+### 📄 Detail Page
+![Detail](images/detail.png)
+
+### ✍️ Create Post
+![Create](images/create.png)
+
+### 👤 Profile Page
+![Profile](images/profile.png)
 
 ## 👨‍💻 Author
 
