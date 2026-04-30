@@ -3,7 +3,7 @@
 
 <style>
 .create-post-container {
-    max-width: 800px;
+    max-width: 780px;
     margin: 40px auto;
 }
 
@@ -12,8 +12,9 @@
     border: none;
     outline: none;
     width: 100%;
-    margin-bottom: 20px;
-    font-weight: bold;
+    margin-bottom: 16px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .editor-subtitle{
@@ -44,17 +45,30 @@
     background:#1a8917;
     color:white;
     border:none;
-    padding:10px 20px;
-    border-radius:20px;
-    font-weight:500;
+    padding:12px 26px;
+    border-radius:30px;
+    font-weight:600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 }
 
-#cover-preview{
+
+.publish-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.cover-preview{
+    margin-top: 20px;
+}
+
+#cover-preview-img{
     width:100%;
     max-height:350px;
     object-fit:cover;
     border-radius:10px;
-    margin-top:15px;
+    display: none;
+    /* margin-top:15px; */
 }
 
 .form-warning{
@@ -73,6 +87,50 @@ button, .publish-btn, .edit-post-btn{
 button:hover{
     transform: translateY(-2px);
 }
+
+@media (max-width: 768px) {
+    .editor-title {
+        font-size: 32px;
+    }
+
+    .editor-subtitle {
+        font-size: 18px;
+    }
+
+    #editorjs {
+        font-size: 17px;
+        
+    }
+
+    .publish-bar {
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .create-post-container {
+        margin: 30px auto;
+    }
+
+    .editor-title {
+        font-size: 26px;
+    }
+
+    .editor-subtitle {
+        font-size: 16px;
+    }
+
+    #editorjs {
+        font-size: 16px;
+
+    }
+    .publish-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 </style>
 
 <div class="create-post-container">
@@ -91,11 +149,16 @@ button:hover{
                maxlength="160"
                placeholder="Write a short subtitle..."
                class="editor-subtitle">       
-        <input type="file" name="featured_image" accept="image/*" id="image-input">
+        <input type="file" 
+               name="featured_image" 
+               accept="image/*" 
+               id="image-input"
+               style="margin-top: 10px;">
         <div class="cover-preview">
             <img id="cover-preview-img" style="display:none;max-width:100%;">
         </div>
 
+        <hr style="border:none;height:1px;background:#eee;margin:30px 0;">
         <div id="editorjs"></div>
 
         <input type="hidden" name="content" id="content-input">
@@ -211,28 +274,6 @@ form.addEventListener("submit", async function(e){
 
 const imageInput = document.querySelector('input[name="featured_image"]');
 const previewImg = document.getElementById("cover-preview-img");
-
-{% comment %} imageInput.addEventListener("change", function(){
-    const file = this.files[0];
-
-    if(file){
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            previewImg.src = e.target.result;
-            previewImg.style.display = "block";
-        }
-
-        reader.readAsDataURL(file);
-    }
-}); {% endcomment %}
-
-
-
-
-
-
-
 
 
 

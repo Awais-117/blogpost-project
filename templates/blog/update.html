@@ -81,52 +81,67 @@ Update Post
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script>
 
-
+{{ post.content|json_script:"post-content" }}
 <script>
 
+// Bind EditorJS tools safely
+const Header = window.Header;
+const Quote = window.Quote;
+const ImageTool = window.ImageTool;
+const LinkTool = window.LinkTool;
+
+// Get content safely
+let contentData = {};
+
+try {
+    const rawData = document.getElementById("post-content").textContent;
+    contentData = rawData ? JSON.parse(rawData) : {};
+} catch (error) {
+    console.error("Content parse error:", error);
+    contentData = {};
+}
+
+// Initialize EditorJS
 const editor = new EditorJS({
+    holder: "editorjs",
 
-holder: "editorjs",
+    data: contentData,
 
-data: {{ post.content|safe }},
+    placeholder: "Continue editing your story...",
 
-placeholder: "Continue editing your story...",
+    tools: {
 
-tools: {
+        header: {
+            class: Header,
+            inlineToolbar: true
+        },
 
-header: {
-class: Header,
-inlineToolbar: true
-},
+        quote: {
+            class: Quote,
+            inlineToolbar: true
+        },
 
-quote: {
-class: Quote,
-inlineToolbar: true
-},
+        image: {
+            class: ImageTool,
+            config: {
+                endpoints: {
+                    byFile: "{% url 'upload_inline_image' %}"
+                },
+                additionalRequestHeaders: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            }
+        },
 
-image: {
-class: ImageTool,
-config: {
-endpoints: {
-byFile: "{% url 'upload_inline_image' %}"
-},
-additionalRequestHeaders: {
-"X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
-}
-}
-},
+        linkTool: {
+            class: LinkTool,
+            config: {
+                endpoint: "/fetch-url/"
+            }
+        }
 
-linkTool: {
-class: LinkTool,
-config: {
-endpoint: "/fetch-url/"
-}
-}
-
-}
-
+    }
 });
-
 const form = document.getElementById("post-form");
 
 form.addEventListener("submit", async function(e){

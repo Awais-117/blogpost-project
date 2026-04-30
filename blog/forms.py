@@ -113,4 +113,4 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ["profile_image", "city", "study", "bio"]
         
-        
+         

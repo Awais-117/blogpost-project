@@ -66,23 +66,7 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 {% endblock %}
 
-{% comment %} 
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'create' %}">Create Post</a>
-        <a href = "{% url 'logout' %}">Logout</a>
-        <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
 
-        <span>Welcome, {{ user.username }}</span>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
-    {% endif %}
-    </nav>  {% endcomment %}
 
     {% block navbar %}
     <nav>
@@ -145,7 +129,7 @@
         <span class="avatar-warning">!</span>
     {% endif %}
 
-    <div class="dropdown" id="profileDropdown">
+    <div class="profile-dropdown" id="profileDropdown">
         <a href="{% url 'profile_detail' %}">Profile</a>
 
         <form method="POST" action="{% url 'logout' %}">
@@ -227,11 +211,12 @@ if (avatarToggle && profileDropdown) {
         });
 
     document.addEventListener("click", function(e) {
-        if   ( !profileDropdown.contains(e.target)) {
+        if   ( !profileDropdown.contains(e.target) && (!avatarToggle.contains(e.target))) {
             profileDropdown.classList.remove("show");
         }
     });
 }
+
 
 
 
