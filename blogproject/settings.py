@@ -27,7 +27,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['blogpost-project-c0vn.onrender.com']
+ALLOWED_HOSTS = [
+    'blogpost-project-c0vn.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]
 CSRF_TRUSTED_ORIGINS = ['https://blogpost-project-c0vn.onrender.com']
 
 AUTHENTICATION_BACKENDS = [
