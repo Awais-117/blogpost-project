@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-79u1&c+yy2h&q3fcn^)=y@ur*3$=yqs*b+o*8=z)pyot7ca8)q'
 import os
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = os.environ.get('DEBUG', 'true') == 'True'
 
 ALLOWED_HOSTS = [
     'blogpost-project-c0vn.onrender.com',
@@ -47,7 +47,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'drvts73iz',
+    'API_KEY': '597211757733622',
+    'API_SECRET': 'G471ZvYU0bLnP9JObjmLnMH3Ows',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
