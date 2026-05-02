@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'true') == 'True'
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'blogpost-project-c0vn.onrender.com',
@@ -34,9 +34,20 @@ ALLOWED_HOSTS = [
 ]
 CSRF_TRUSTED_ORIGINS = ['https://blogpost-project-c0vn.onrender.com']
 
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,11 +62,6 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('drvts73iz'),
-    'API_KEY': os.environ.get('918227393329316'),
-    'API_SECRET': os.environ.get('hZYRnlrANT97YmFH0vvsUNaup94'),
-}
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 

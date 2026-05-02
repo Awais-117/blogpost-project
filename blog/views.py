@@ -374,7 +374,7 @@ def upload_inline_image(request):
             image
         )
 
-        image_url = settings.MEDIA_URL + file_path
+        image_url = default_storage.url(file_path)
 
         return JsonResponse({
             "success": 1,
