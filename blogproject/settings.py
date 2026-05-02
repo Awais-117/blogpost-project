@@ -52,9 +52,9 @@ INSTALLED_APPS = [
 ]
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'drvts73iz',
-    'API_KEY': '597211757733622',
-    'API_SECRET': 'G471ZvYU0bLnP9JObjmLnMH3Ows',
+    'CLOUD_NAME': os.environ.get('drvts73iz'),
+    'API_KEY': os.environ.get('597211757733622'),
+    'API_SECRET': os.environ.get('G471ZvYU0bLnP9JObjmLnMH3Ows'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
