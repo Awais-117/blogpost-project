@@ -36,6 +36,7 @@ CSRF_TRUSTED_ORIGINS = ['https://blogpost-project-c0vn.onrender.com']
 
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 
+print("CLOUDINARY:", os.environ.get("CLOUDINARY_URL"))
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -45,6 +46,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'drvts73iz',
+    'API_KEY': '728499431417794',
+    'API_SECRET': 'XncOEoc4hLju2vUsWxn0hy_6YbY',
+}
 
 
 
