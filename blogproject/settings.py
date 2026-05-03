@@ -43,15 +43,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-print("CLOUDINARY:", os.environ.get("CLOUDINARY_URL"))
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('drvts73iz'),
-    'API_KEY': os.environ.get('728499431417794'),
-    'API_SECRET': os.environ.get('XncOEoc4hLju2vUsWxn0hy_6YbY'),
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
-
-
 
 # Application definition
 
