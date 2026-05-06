@@ -22,7 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-79u1&c+yy2h&q3fcn^)=y@ur*3$=yqs*b+o*8=z)pyot7ca8)q'
-import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
@@ -49,6 +48,10 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('API_KEY'),
     'API_SECRET': os.environ.get('API_SECRET'),
 }
+
+
+print("CLOUD NAME:", os.environ.get("CLOUD_NAME"))
+# print("API KEY:", os.environ.get("API_KEY"))
 
 # Application definition
 
@@ -162,3 +165,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'landing'
 LOGIN_URL = '/accounts/login/'
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
