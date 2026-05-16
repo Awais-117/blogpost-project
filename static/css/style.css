@@ -6,16 +6,7 @@ body {
     box-sizing: border-box;
 }
 
-.landing {
-    height: 100vh;
-    width: 100%;
-    background: url("../images/image.png") center/cover no-repeat;
-    display: flex;
-    justify-content: flex-end; /* move content to right */
-    align-items: center;
-    padding-top: 0;
- /* spacing from right/left */
-}
+
 
 .overlay {
     max-width: 600px; /* keep text readable */
@@ -23,44 +14,186 @@ body {
     display: flex;padding-right: 10px;
 
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.3rem;
+    animation: fadeUp 0.9s ease;
 }
 
 .overlay h1 {
-    font-size: 5.4rem; /* big hero heading */
+    font-size: clamp(2.8rem, 7vw, 5.4rem); /* big hero heading */
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.05;
     color: #000;
     font-family: 'Playfair Display', serif;
     margin: 0;
+    letter-spacing: -2px;
 }
 
 .overlay p {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     font-weight: 500;
-    color: #000;
-    line-height: 1.5
+    color: #111;
+    line-height: 1.7;
+    max-width: 540px;
+
 }
 
 
-.btn-landing {
+/* .btn-landing {
     padding: 15px 18px;          
     background: #000;
     color: #fff;
     text-decoration: none;
-    font-size: 1.1rem;          /* Medium-like */
-    font-weight: 500;           /* not too bold */
+    font-size: 1.1rem;          
+    font-weight: 500;         
     border-radius: 15px;
     width: 210px;     
-    text-align: center;    /* subtle corners */
+    text-align: center;    
     margin-top: 1.2rem;
     transition: background 0.2s ease;
 }
 
 .btn-landing:hover {
-    background: #222;           /* very subtle hover */
+    background: #222;           
+} */
+
+
+
+.landing {
+    min-height: 100vh;
+    width: 100%;
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.15),
+            rgba(255,255,255,0.15)
+        ),
+        url("../images/image.png") center/cover no-repeat;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 40px 6%;
 }
 
+.btn-landing {
+    padding: 15px 22px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    border-radius: 14px;
+
+    width: fit-content;
+    min-width: 190px;
+
+    text-align: center;
+
+    margin-top: 1rem;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.btn-landing:hover {
+    background: #222;
+    transform: translateY(-3px);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 992px) {
+
+    .landing {
+        justify-content: center;
+        text-align: center;
+        padding: 60px 8%;
+    }
+
+    .overlay {
+        align-items: center;
+    }
+
+    .overlay p {
+        max-width: 100%;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .landing {
+        align-items: flex-end;
+        padding: 80px 22px 60px;
+        background-position: center;
+    }
+
+    .overlay {
+        gap: 1rem;
+    }
+
+    .overlay h1 {
+        line-height: 1.1;
+        letter-spacing: -1px;
+    }
+
+    .overlay p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .btn-landing {
+        width: 100%;
+        max-width: 260px;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .landing {
+        padding: 70px 18px 45px;
+    }
+
+    .overlay h1 {
+        font-size: 2.5rem;
+    }
+
+    .overlay p {
+        font-size: 0.95rem;
+    }
+
+    .btn-landing {
+        padding: 14px 18px;
+        font-size: 0.95rem;
+    }
+}
 
 
 
@@ -1721,7 +1854,7 @@ button:hover{
 
     .main-content{
         margin-left: 0;
-        padding: 70px 16px 20px;
+        padding: 60px 8px 15px;
     }
 
     /* .feed-wrapper{
@@ -2062,7 +2195,7 @@ margin-top:10px;
 }
 @media (max-width: 768px){
     .public-profile{
-        padding: 40px 16px;
+        padding: 40px 10px;
     }
     .author-header{
         flex-direction: column;

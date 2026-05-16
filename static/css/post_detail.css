@@ -432,11 +432,6 @@ body.comments-open .page-layout {
 }
 
 
-@media (max-width: 768px) {
-
-    
-}
-
 
 
 
@@ -774,7 +769,7 @@ color:#6b6b6b;
 @media (max-width: 767px) {
 
     .post-container {
-        padding: 28px 16px;
+        padding: 24px 8px;
     }
 
     .post-title{
