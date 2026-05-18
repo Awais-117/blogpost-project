@@ -146,8 +146,8 @@ body {
 @media (max-width: 768px) {
 
     .landing {
-        align-items: flex-end;
-        padding: 30px 22px 60px;
+        
+        padding: 60px 8%;
         background-position: center;
     }
 
@@ -178,7 +178,7 @@ body {
 @media (max-width: 480px) {
 
     .landing {
-        padding: 70px 18px 45px;
+        padding: 60px 18px 45px;
     }
 
     .overlay h1 {
