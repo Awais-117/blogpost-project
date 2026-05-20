@@ -1218,7 +1218,14 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 @media (max-width: 768px) {
 
     .profile-wrapper {
-        padding: 35px 16px;
+        padding: 30px 12px;
+    }
+    
+
+
+
+    .profile-wrapper{
+        padding:55px 16px;
     }
 
     .profile-card {
@@ -1246,11 +1253,22 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     .profile-stats {
         justify-content: center;
+        gap: 10px;
     }
 
     .profile-extra {
         justify-content: center;
     }
+
+    .stat-item {
+       min-width: 70px;
+    }
+
+    .stat-item a {
+        gap: 2px;
+    }
+    
+
 
     .platform-note {
         text-align: center;
@@ -1279,10 +1297,24 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 @media (max-width: 480px) {
 
-    .profile-card {
-        padding: 24px 18px;
-        flex-direction: column;
+    .profile-wrapper {
+        padding: 30px 10px;
     }
+    
+
+
+
+    .profile-wrapper{
+        padding:50px 14px;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        padding: 32px 16px;
+
+    }
+
+    
 
     .profile-name {
         font-size: 1.9rem;
