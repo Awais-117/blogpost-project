@@ -898,7 +898,7 @@ body.landing-page .main-content {
 /* HEADER */
 
 .profile-wrapper{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 padding:60px 20px;
 }
@@ -911,180 +911,405 @@ gap:50px;
 align-items:center;
 background:white;
 padding:50px;
-border-radius:16px;
-box-shadow:0 8px 30px rgba(0,0,0,0.06);
-transition: 0.3s ease;
+border-radius:24px;
+box-shadow:0 10px 40px rgba(0,0,0,0.06);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .profile-card:hover{
+    transform: translateY(-3px);
     box-shadow:0 14px 50px rgba(0,0,0,0.08);
 }
 
-/* left */
 
-.profile-left{
-flex-shrink:0;
+/* =========================
+   LEFT
+========================= */
+
+.profile-left {
+    flex-shrink: 0;
 }
 
-.profile-avatar{
-width:150px;
-height:150px;
-border-radius:50%;
-object-fit:cover;
-border: 3px solid#f5f5f5;
+.profile-avatar,
+.profile-avatar-placeholder {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
 }
 
-.profile-avatar-placeholder{
-width:140px;
-height:140px;
-border-radius:50%;
-background:#e5e5e5;
-display:flex;
-
-align-items:center;
-justify-content:center;
-font-size:48px;
+.profile-avatar {
+    object-fit: cover;
+    border: 4px solid #f4f4f4;
 }
 
-/* right */
+.profile-avatar-placeholder {
+    background: #e8e8e8;
 
-.profile-right{
-flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 52px;
+    font-weight: 600;
+    color: #444;
 }
 
-.profile-name{
-font-size:32px;
-margin-bottom:6px;
-letter-spacing: -0.5px;
-font-weight: 600;
+/* =========================
+   RIGHT
+========================= */
+
+.profile-right {
+    flex: 1;
+    min-width: 0;
 }
 
-.profile-bio{
-color:#444;
-margin-bottom:12px;
-line-height:1.7;
-max-width: 500px;
-font-size: 15px;
+.profile-name {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+
+    margin-bottom: 10px;
+
+    line-height: 1.1;
+    letter-spacing: -1px;
+
+    word-break: break-word;
 }
 
-.profile-meta{
-color:#888;
-font-size:14px;
-margin-bottom:20px;
+.profile-bio {
+    color: #444;
+    line-height: 1.8;
+
+    font-size: 15px;
+
+    margin-bottom: 14px;
+
+    max-width: 600px;
 }
 
+.profile-meta {
+    color: #888;
+    font-size: 14px;
 
-
-
-
-/* extra info */
-
-.profile-extra{
-display:flex;
-gap:30px;
-margin-bottom:20px;
+    margin-bottom: 28px;
 }
 
-.extra-item span{
+/* =========================
+   STATS
+========================= */
 
-font-size:12px;
-color:#999;
+.profile-stats {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-bottom: 25px;
 }
 
-.extra-item strong{
-font-size:16px;
-color: #222;
+.stat-item {
+    min-width: 90px;
 }
 
-/* edit button */
+.stat-item a {
+    text-decoration: none;
+    color: inherit;
 
-.edit-profile-btn{
-margin-bottom:15px;
-display:inline-block;
-    padding:10px 20px;
-    border-radius:8px;
-    border:1px solid #ddd;
-    text-decoration:none;
-    font-size:14px;
-    transition:0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-.edit-profile-btn:hover{
+.stat-item strong {
+    font-size: 20px;
+    color: #111;
+}
+
+.stat-item span {
+    font-size: 13px;
+    color: #777;
+}
+
+/* =========================
+   EXTRA INFO
+========================= */
+
+.profile-extra {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 25px;
+
+    margin-bottom: 24px;
+}
+
+.extra-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.extra-item span {
+    font-size: 12px;
+    color: #999;
+}
+
+.extra-item strong {
+    font-size: 16px;
+    color: #222;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.edit-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    border: 1px solid #ddd;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.edit-profile-btn:hover {
     background: #111;
-    border-color: #111;
     color: #fff;
+
+    transform: translateY(-2px);
 }
 
-/* platform note */
+/* =========================
+   NOTE
+========================= */
 
-.platform-note{
-font-size:13px;
-color:#777;
-margin-top:10px;
-}
+.platform-note {
+    margin-top: 18px;
 
+    font-size: 13px;
+    color: #777;
 
-.profile-insights{
-margin-top:50px;
-}
-
-.profile-insights h2{
-margin-bottom:20px;
+    line-height: 1.6;
 }
 
-.insight-grid{
-display:flex;
-gap:20px;
+/* =========================
+   INSIGHTS
+========================= */
+
+.profile-insights {
+    margin-top: 60px;
 }
 
-.insight-card{
-flex:1;
-padding:25px;
-border-radius:12px;
-background:#fafafa;
-text-align:center;
-transition: 0.25s ease;
-border: 1ps solid #eee;
-}
-.insight-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+.profile-insights h2 {
+    margin-bottom: 24px;
 }
 
-.insight-card h3{
-font-size:26px;
-margin-bottom:5px;
+.insight-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
 }
 
-.insight-card p{
-color:#777;
-font-size:14px;
+.insight-card {
+    background: #fafafa;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    border: 1px solid #eee;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-.profile-latest{
-margin-top:50px;
+.insight-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
 }
 
-.latest-post{
-display:flex;
-justify-content:space-between;
-padding:14px 0;
-border-bottom:1px solid #eee;
-align-items: center;
-}
-.latest-post a{
-    text-decoration:none;
-    font-weight:500;
-    color:#111;
+.insight-card h3 {
+    font-size: 28px;
+    margin-bottom: 8px;
 }
 
-.latest-post a:hover{
-    text-decoration:underline;
+.insight-card p {
+    color: #777;
+    font-size: 14px;
 }
 
-.latest-post span{
-    font-size:13px;
-    color:#888;
+/* =========================
+   LATEST POST
+========================= */
+
+.profile-latest {
+    margin-top: 60px;
 }
+
+.latest-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.latest-post a {
+    text-decoration: none;
+
+    font-weight: 600;
+    color: #111;
+
+    line-height: 1.5;
+}
+
+.latest-post a:hover {
+    text-decoration: underline;
+}
+
+.latest-post span {
+    font-size: 13px;
+    color: #888;
+
+    white-space: nowrap;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 992px) {
+
+    .profile-card {
+        padding: 40px;
+        gap: 35px;
+    }
+
+    .insight-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .profile-wrapper {
+        padding: 35px 16px;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+
+        padding: 32px 22px;
+
+        gap: 28px;
+    }
+
+    .profile-right {
+        width: 100%;
+    }
+
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-avatar-placeholder {
+        font-size: 38px;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .profile-extra {
+        justify-content: center;
+    }
+
+    .platform-note {
+        text-align: center;
+    }
+
+    .edit-profile-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .latest-post {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+
+    .latest-post span {
+        white-space: normal;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .profile-card {
+        padding: 24px 18px;
+        flex-direction: column;
+    }
+
+    .profile-name {
+        font-size: 1.9rem;
+    }
+
+    .profile-bio {
+        font-size: 14px;
+    }
+
+    .stat-item strong {
+        font-size: 18px;
+    }
+
+    .insight-card {
+        padding: 22px;
+    }
+
+    .insight-card h3 {
+        font-size: 24px;
+    }
+}
+
+
+
+
+
+
 
 
 
