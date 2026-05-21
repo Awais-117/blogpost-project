@@ -1324,6 +1324,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         font-size: 14px;
     }
 
+    .profile-stats{
+        gap: 10px;
+    }
+    .stat-item{
+        gap: 10px;
+    }
     .stat-item strong {
         font-size: 18px;
     }
