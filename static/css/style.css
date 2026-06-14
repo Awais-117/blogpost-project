@@ -56,7 +56,11 @@ body {
     background: #222;           
 } */
 
-
+@media (max-width:600px){
+    .ignore{
+        display: none;
+    }
+}
 
 .landing {
     min-height: 100vh;
